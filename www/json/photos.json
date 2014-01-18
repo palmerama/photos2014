@@ -1,0 +1,11 @@
+{
+	"intro": { "src":"intro.jpg", "title":"SOME PHOTOS I TOOK WITH MY CAMERA.<br/>ADAM PALMER", "titleAlpha":0.2 },
+
+	"photos": [
+
+		{ "id":"tofino", "src": "tofino.jpg", "title":"Tofino at dusk, Vancouver Island", "titleAlpha":0.2 },
+		{ "id":"bridge", "src": "bridge.jpg", "title":"Lion's Gate Bridge, Vancouver.", "titleAlpha":0.4 },
+		{ "id":"whale", "src": "whale1.jpg", "title":"Hello.", "titleAlpha":0.3 }
+
+	]
+}
