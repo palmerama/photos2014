@@ -20,14 +20,12 @@
 			// setup
 			this.image = new Image();
 			this.image.onload = this.picLoaded.bind(this);
-			this.userScale = 1;
 			this.textShadowColour = '#FFF';
 
 			// binds
 			this.loadImageBound = this.loadImage.bind(this);
 			this.onResizeWindowBound = this.onResizeWindow.bind(this);
 			this.gotoNextPhotoBound = this.gotoNextPhoto.bind(this);
-
 			this.enableClickBound = this.enableClick.bind(this);
 
 			// controllers
@@ -47,14 +45,15 @@
 			$.ajax({
 				urlDataType: 'json',
 				cache: false,
-				url: 'json/photos.json',
+				url: 'scripts/get_photos.php',
 				success: this.onDataLoaded.bind(this)
 			});			
 		};
 
 		p.onDataLoaded = function(data)
 		{
-			this.data = data;
+			console.log(data);
+			this.data = data;			
 
 		    // photo lookup table
 			this.data.photosLookup = [];
@@ -66,15 +65,8 @@
 
 			$(window).resize(this.onResizeWindowBound);
 			window.addEventListener('orientationchange', this.onResizeWindowBound);
-
-			// pinch etc
-			$('body').bind("gesturechange", this.onGestureChange.bind(this) );
 		}
-
-		p.onGestureChange = function(e)
-		{
-			this.userScale = e.originalEvent.scale;
-		}
+		
 
 		/* JSAddress stuff happens here from URL change */
  
@@ -89,9 +81,8 @@
 				this.currentPhotoData = this.data.photos[this.currentPhoto];
 			}
 			else {
-
 				this.currentPhoto = -1;
-				this.currentPhotoData = this.data.intro;
+				this.currentPhotoData = this.data.covers[Math.floor(Math.random()*this.data.covers.length)];
 			}
 
 			// hide current photo
@@ -105,18 +96,31 @@
 
 		p.loadImage = function() 
 		{
-			this.image.src = 'img/photos/' + this.currentPhotoData.src;
-			console.log('loading image:', this.currentPhotoData.src);
+			this.image.src = 'img/photos/' + this.currentPhotoData.id + '.jpg';
+			console.log('loading photo id:', this.currentPhotoData.id + '.jpg');
 		}
 
 		p.picLoaded = function()
 		{
-			console.log('image loaded:', this.currentPhotoData.src);
+			console.log('image loaded:', this.currentPhotoData.id);
 
-			$('#pic').css('background-size', this.urlData.path.length > 0 ? 'contain' : 'cover');
-			$('#pic').css('background-image', 'url("' + 'img/photos/' + this.currentPhotoData.src + '")');
+			if (this.urlData.path.length == 0) 
+			{
+				this.imageFillMethod = 'cover';
+				this.titleCopy = 'SOME PHOTOS I TOOK WITH MY CAMERA.<br/>ADAM PALMER';
+				this.titleRevealTime = 1.5;
+			}
+			else 
+			{
+				this.imageFillMethod = 'contain';
+				this.titleCopy = this.currentPhotoData.title_display.toUpperCase();
+				this.titleRevealTime = .6;
+			}
 
-			$('#titleCard span').html(this.currentPhotoData.title.toUpperCase());
+			$('#pic').css('background-size', this.imageFillMethod);
+			$('#pic').css('background-image', 'url("' + 'img/photos/' + this.currentPhotoData.id + '.jpg")');
+
+			$('#titleCard span').html(this.titleCopy);
 			$('#titleCard').css('font-size', '1px');
 			TweenMax.to('#titleCard', 0, { textShadow:this.textShadowColour + ' 0 0 0px' });
 			this.onResizeWindow();
@@ -126,16 +130,26 @@
 
 			// show text
 			TweenMax.killTweensOf('#titleCard');
-			TweenMax.to('#titleCard', this.urlData.path.length > 0 ? .6 : 1.5, { delay:1, 
-				autoAlpha:this.currentPhotoData.titleAlpha != undefined ? this.currentPhotoData.titleAlpha : this.urlData.path.length > 0 ? .3 : .2, 
+			TweenMax.to('#titleCard', this.titleRevealTime, { 
+				delay:1, 
+				autoAlpha:this.currentPhotoData.title_alpha, 
 				ease:Sine.easeInOut, 
-				onComplete:this.fadeOutTitle.bind(this) });			
+				onComplete:this.fadeOutTitle.bind(this) 
+			});			
 		}
 
 		p.fadeOutTitle = function()
 		{
-			if (this.urlData.path.length > 0) TweenMax.to('#titleCard', Math.max(3.5, 2 + this.currentPhotoData.title.length*.07), 
-			{ delay:.4 + this.currentPhotoData.title.length*.08, textShadow:this.textShadowColour + ' 0 0 100px', autoAlpha:0, ease:Sine.easeInOut });
+			if (this.urlData.path.length > 0) 
+			{
+				TweenMax.to('#titleCard', Math.max(3.5, 2 + this.currentPhotoData.title_display.length*.07), 
+				{ 
+					delay:.4 + this.currentPhotoData.title_display.length*.08, 
+					textShadow:this.textShadowColour + ' 0 0 100px', 
+					autoAlpha:0, 
+					ease:Sine.easeInOut 
+				});
+			}
 		}
 
 		p.enableClick = function()
