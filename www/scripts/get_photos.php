@@ -18,7 +18,8 @@
         'id'=>$db_field['id'],
         'page_id'=>$db_field['page_id'],
         'title_display'=>$db_field['title_display'],
-        'title_alpha'=>$db_field['title_alpha']
+        'title_alpha'=>$db_field['title_alpha'],
+        'potrait'=>$db_field['portrait']
       );
 
       array_push($json['photos'], $record);

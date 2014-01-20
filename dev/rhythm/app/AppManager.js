@@ -15,11 +15,10 @@
 		
 		p.init = function()
 		{
-			console.log("App initialising...");	
-
 			// setup
 			this.image = new Image();
 			this.image.onload = this.picLoaded.bind(this);
+			this.imageSizes = [500, 1000, 1500, 2000];
 			this.textShadowColour = '#FFF';
 
 			// binds
@@ -52,7 +51,7 @@
 
 		p.onDataLoaded = function(data)
 		{
-			console.log(data);
+			// console.log(data);
 			this.data = data;			
 
 		    // photo lookup table
@@ -96,13 +95,35 @@
 
 		p.loadImage = function() 
 		{
-			this.image.src = 'img/photos/' + this.currentPhotoData.id + '.jpg';
-			console.log('loading photo id:', this.currentPhotoData.id + '.jpg');
+			console.log('window size =>', window.innerWidth * window.devicePixelRatio, 'x', window.innerHeight * window.devicePixelRatio);
+			console.log('pixel ratio:', window.devicePixelRatio);
+
+			if (this.urlData.path.length > 0)
+			{
+				if (this.currentPhotoData.portrait) this.longestSideWindow = window.innerHeight * window.devicePixelRatio;
+				else this.longestSideWindow = window.innerWidth * window.devicePixelRatio;
+
+				this.imageSize = this.imageSizes[0];
+
+				for (var i=0; i<this.imageSizes.length; ++i)
+				{
+					if (this.longestSideWindow < this.imageSizes[i] || i == this.imageSizes.length-1)
+					{
+						this.imageSize = this.imageSizes[i];
+						break;
+					}
+				}			
+
+				console.log('load image', this.imageSize, 'on the longest sizde');
+			}
+
+			this.image.src = 'img/photos/' + this.currentPhotoData.id + '-' + this.imageSize + '.jpg';
+			console.log('loading photo id:', this.currentPhotoData.id + '-' + this.imageSize + '.jpg');
 		}
 
 		p.picLoaded = function()
 		{
-			console.log('image loaded:', this.currentPhotoData.id);
+			console.log('image loaded:', this.image.src);
 
 			if (this.urlData.path.length == 0) 
 			{
@@ -118,7 +139,7 @@
 			}
 
 			$('#pic').css('background-size', this.imageFillMethod);
-			$('#pic').css('background-image', 'url("' + 'img/photos/' + this.currentPhotoData.id + '.jpg")');
+			$('#pic').css('background-image', 'url("' + this.image.src + '")');
 
 			$('#titleCard span').html(this.titleCopy);
 			$('#titleCard').css('font-size', '1px');
@@ -154,14 +175,14 @@
 
 		p.enableClick = function()
 		{
-			console.log('ENABLE click');
+			// console.log('ENABLE click');
 			$('body').bind('mousedown', this.gotoNextPhotoBound);
 			$('body').bind('touchstart', this.gotoNextPhotoBound);
 		}
 
 		p.disableClick = function()
 		{
-			console.log('DISABLE click');
+			// console.log('DISABLE click');
 			$('body').unbind('mousedown', this.gotoNextPhotoBound);
 			$('body').unbind('touchstart', this.gotoNextPhotoBound);
 		}
@@ -185,6 +206,9 @@
 
 		p.onResizeWindow = function()
 		{
+			if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+			this.resizeTimeout = setTimeout(this.loadImageBound, 1000);
+
 			if (this.urlData.path.length > 0) this.bgController.positionBackground();
 			else this.bgController.resetBackground();	
 
