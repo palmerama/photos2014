@@ -6,41 +6,50 @@
   $json['covers'] = array();
   $json['photos'] = array();
 
-  $SQL = "SELECT * FROM photos";
+
+  // GET PHOTOS IN SEQUENCE
+
+  $SQL = "SELECT DISTINCT photos.id, photos.page_id, photos.title_display, photos.title_alpha, photos.cover, photos.portrait 
+          FROM sequence, photos WHERE photos.id = sequence.photo_id ORDER BY sequence.id ASC";
+
   $result = mysql_query($SQL) or die(mysql_error());    
 
   while ( $db_field = mysql_fetch_assoc($result) )
   {
     // add to site list?
-    if ($db_field['show_on_site'] == 1) 
-    {
-      $record = array(
-        'id'=>$db_field['id'],
-        'page_id'=>$db_field['page_id'],
-        'title_display'=>$db_field['title_display'],
-        'title_alpha'=>$db_field['title_alpha'],
-        'portrait'=>$db_field['portrait']
-      );
+    $record = array(
+    'id'=>$db_field['id'],
+      'page_id'=>$db_field['page_id'],
+      'title_display'=>$db_field['title_display'],
+      'title_alpha'=>$db_field['title_alpha'],
+      'portrait'=>$db_field['portrait']
+    );
 
-      array_push($json['photos'], $record);
-    }
-
-    // add to covers list?
-    if ($db_field['cover'] == 1) 
-    {
-      $record = array(
-        'id'=>$db_field['id'],
-        'page_id'=>$db_field['page_id'],
-        'title_alpha'=>$db_field['title_alpha'],
-        'portrait'=>$db_field['portrait']
-      );
-
-      array_push($json['covers'], $record);
-    }
+    array_push($json['photos'], $record);
   }
 
 
-  // return
+  // GET COVERS
+
+  $SQL = "SELECT * FROM photos WHERE cover = 1";
+
+  $result = mysql_query($SQL) or die(mysql_error());    
+
+  while ( $db_field = mysql_fetch_assoc($result) )
+  {
+    $record = array(
+      'id'=>$db_field['id'],
+      'page_id'=>$db_field['page_id'],
+      'title_alpha'=>$db_field['title_alpha'],
+      'portrait'=>$db_field['portrait']
+    );
+
+    array_push($json['covers'], $record);
+  }
+
+
+  // RETURN
+
   header('Content-Type: application/json');
   echo json_encode($json);
 

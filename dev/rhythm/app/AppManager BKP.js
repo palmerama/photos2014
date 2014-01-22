@@ -53,13 +53,11 @@
 		p.onDataLoaded = function(data)
 		{
 			console.log(data);
-			this.data = data;		
+			this.data = data;			
 
 		    // photo lookup table
 			this.data.photosLookup = [];
-			for (var i=0; i<this.data.photos.length; ++i) this.data.photosLookup[this.data.photos[i].page_id] = i;
-
-			console.log('lookup:', this.data.photosLookup);
+			for (var i=0; i<this.data.photos.length; ++i) this.data.photosLookup.push(this.data.photos[i].id);
 
 		    // set up jsAddress
 			this.jsAddress = new MAIN.utils.JSAddress();
@@ -86,14 +84,14 @@
 			}
 			else {
 				
-				if (this.urlData.path[0] == 'cover')
+				if (this.urlData.path[0] != 'cover')
 				{
-					this.currentPhoto = -1;
-					this.currentPhotoData = this.data.covers[Math.floor(Math.random()*this.data.covers.length)];
+					this.currentPhoto = this.data.photosLookup.indexOf(this.urlData.path[0]);
+					this.currentPhotoData = this.data.photos[this.currentPhoto];
 				}
 				else {
-					this.currentPhoto = this.data.photosLookup[this.urlData.path[0]];
-					this.currentPhotoData = this.data.photos[this.currentPhoto];
+					this.currentPhoto = -1;
+					this.currentPhotoData = this.data.covers[Math.floor(Math.random()*this.data.covers.length)];
 				}
 
 				console.log('covers:', this.data.covers.length, 'photo data:', this.currentPhotoData);
@@ -111,6 +109,7 @@
 
 		p.loadImage = function() 
 		{
+
 			if (this.urlData.path[0] == 'cover') 
 			{
 				this.imageSize = this.imageSizes[this.imageSizes.length-1];
@@ -235,7 +234,7 @@
 				location = '#/cover';
 			}
 			else {
-				location = '#/' + this.data.photos[this.currentPhoto].page_id;
+				location = '#/' + this.data.photos[this.currentPhoto].id;
 			}
 		}
 

@@ -36,7 +36,7 @@
 			// var numLines = Math.floor($('#titleCard').innerHeight() / parseInt($('#titleCard').css('line-height')) );
 
 			$('#titleCard').css('top', '0px');
-			$('#titleCard').css('font-size', intro > 0 ? Math.min(48, Math.ceil((h*w)*.0002)) : 300 + 'px');
+			$('#titleCard').css('font-size', intro != 'cover' ? Math.min(48, Math.ceil((h*w)*.0002)) : 300 + 'px');
 
 			if (intro == 'cover')
 			{
