@@ -1,0 +1,43 @@
+
+html, body {
+	margin:0;
+	padding:0;
+	background: #222;
+
+	width:100%;
+	height:100%;
+
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	font-size: 24px;
+	color: white;
+}
+
+#photo-harness {
+	position: relative;
+	width: auto;
+	height: auto;
+}
+
+#titleCard {
+    position: absolute;
+    text-align: left;
+    
+    max-width: 800px;    
+    padding: .3em;
+    opacity: 0;
+
+    font-size: 6.1em;
+    line-height: 1em;
+
+    color: transparent;
+    text-shadow: #fff 0 0 0px;
+}
+
+#titleCard span {
+	-webkit-appearance: none;
+	border-radius: 0;
+	resize: none;
+	outline: none;
+	text-transform: uppercase;
+}

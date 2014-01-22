@@ -31,21 +31,21 @@
 			$('#titleCard').css('font-size', this.getFontSize()*.9 + 'px');
 		}
 
-		p.fitTitleToWindow = function(intro)
+		p.fitTitleToArea = function(intro, w, h)
 		{
 			// var numLines = Math.floor($('#titleCard').innerHeight() / parseInt($('#titleCard').css('line-height')) );
 
 			$('#titleCard').css('top', '0px');
-			$('#titleCard').css('font-size', intro > 0 ? Math.min(48, Math.ceil((window.innerHeight*window.innerWidth)*.0002)) : 300 + 'px');
+			$('#titleCard').css('font-size', intro > 0 ? Math.min(48, Math.ceil((h*w)*.0002)) : 300 + 'px');
 
-			if (intro == 0)
+			if (intro == 'cover')
 			{
-				while ($('#titleCard span').innerWidth() > window.innerWidth* .9 || $('#titleCard span').outerHeight() > window.innerHeight*.94) 
+				while ($('#titleCard span').innerWidth() > w* .9 || $('#titleCard span').outerHeight() > h*.94) 
 				{
 					this.decreaseFontSize();
 				}
 			}			
-			else $('#titleCard').css('top', Math.floor(   (window.innerHeight - $('#titleCard span').outerHeight())/2 - parseInt($('#titleCard').css('padding-top'))*.7)  );
+			else $('#titleCard').css('top', Math.floor(   (h - $('#titleCard span').outerHeight())/2 - parseInt($('#titleCard').css('padding-top'))*.7)  );
 		}
 
 	}

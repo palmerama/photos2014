@@ -19,7 +19,7 @@
         'page_id'=>$db_field['page_id'],
         'title_display'=>$db_field['title_display'],
         'title_alpha'=>$db_field['title_alpha'],
-        'potrait'=>$db_field['portrait']
+        'portrait'=>$db_field['portrait']
       );
 
       array_push($json['photos'], $record);
@@ -30,7 +30,9 @@
     {
       $record = array(
         'id'=>$db_field['id'],
-        'title_alpha'=>$db_field['title_alpha']
+        'page_id'=>$db_field['page_id'],
+        'title_alpha'=>$db_field['title_alpha'],
+        'portrait'=>$db_field['portrait']
       );
 
       array_push($json['covers'], $record);

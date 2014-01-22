@@ -46,8 +46,20 @@
 		<script type="text/javascript" src="../dev/rhythm/app/BGController.js"></script>
 		<script type="text/javascript" src="../dev/rhythm/app/TextController.js"></script>
 		<script type="text/javascript" src="../dev/rhythm/app/AppManager.js"></script>
-		<script type="text/javascript" src="../dev/rhythm/app/Init.js"></script>
 		<!-- END DEV -->
+
+		<script type="text/javascript">
+			MAIN.init = function()
+			{
+				var app = MAIN.namespace('MAIN.app');
+				var appManager = new app.AppManager();
+				appManager.init();
+			};
+
+			$(function(){
+				MAIN.init();
+			});
+		</script>
 	</body>
 
 </html>

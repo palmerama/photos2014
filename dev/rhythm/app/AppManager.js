@@ -19,6 +19,8 @@
 			this.image = new Image();
 			this.image.onload = this.picLoaded.bind(this);
 			this.imageSizes = [500, 1000, 1500, 2000];
+			this.lastImageSize = this.imageSizes[0];
+			this.lastPhotoId = -1;
 			this.textShadowColour = '#FFF';
 
 			// binds
@@ -40,7 +42,6 @@
 
 		p.getData = function()
 		{
-			// load scenes urlData
 			$.ajax({
 				urlDataType: 'json',
 				cache: false,
@@ -51,7 +52,7 @@
 
 		p.onDataLoaded = function(data)
 		{
-			// console.log(data);
+			console.log(data);
 			this.data = data;			
 
 		    // photo lookup table
@@ -73,37 +74,55 @@
 		{
 			this.disableClick();
 			this.urlData = urlData;
-			
-			if (this.urlData.path.length > 0)
+
+			console.log('\n\n');
+
+			if (this.urlData.path.length == 0)
 			{
-				this.currentPhoto = this.data.photosLookup.indexOf(this.urlData.path[0]);
-				this.currentPhotoData = this.data.photos[this.currentPhoto];
+				this.lastImageSize = this.imageSizes[0];
+				location = '#/cover';
 			}
 			else {
-				this.currentPhoto = -1;
-				this.currentPhotoData = this.data.covers[Math.floor(Math.random()*this.data.covers.length)];
-			}
+				
+				if (this.urlData.path[0] != 'cover')
+				{
+					this.currentPhoto = this.data.photosLookup.indexOf(this.urlData.path[0]);
+					this.currentPhotoData = this.data.photos[this.currentPhoto];
+				}
+				else {
+					this.currentPhoto = -1;
+					this.currentPhotoData = this.data.covers[Math.floor(Math.random()*this.data.covers.length)];
+				}
 
-			// hide current photo
-			TweenMax.killTweensOf('#pic');
-			TweenMax.to('#pic', .2, { autoAlpha:0, ease:Sine.easeIn });
+				console.log('covers:', this.data.covers.length, 'photo data:', this.currentPhotoData);
 
-			// hide text, then load new photo 
-			TweenMax.killTweensOf('#titleCard');
-			TweenMax.to('#titleCard', .3, {autoAlpha:0, ease:Sine.easeIn, onComplete:this.loadImageBound});
+				// hide current photo
+				TweenMax.killTweensOf('#pic');
+				TweenMax.to('#pic', .2, { autoAlpha:0, ease:Sine.easeIn });
+
+				// hide text, then load new photo 
+				TweenMax.killTweensOf('#titleCard');
+				TweenMax.to('#titleCard', .3, {autoAlpha:0, ease:Sine.easeIn, onComplete:this.loadImageBound});
+
+			}		
 		}
 
 		p.loadImage = function() 
 		{
-			console.log('window size =>', window.innerWidth * window.devicePixelRatio, 'x', window.innerHeight * window.devicePixelRatio);
-			console.log('pixel ratio:', window.devicePixelRatio);
 
-			if (this.urlData.path.length > 0)
+			if (this.urlData.path[0] == 'cover') 
 			{
-				if (this.currentPhotoData.portrait) this.longestSideWindow = window.innerHeight * window.devicePixelRatio;
+				this.imageSize = this.imageSizes[this.imageSizes.length-1];
+			}
+			else {
+				console.log('window size =>', window.innerWidth * window.devicePixelRatio, 'x', window.innerHeight * window.devicePixelRatio);
+				console.log('pixel ratio:', window.devicePixelRatio);
+
+				if (this.currentPhotoData.portrait == '1') this.longestSideWindow = window.innerHeight * window.devicePixelRatio;
 				else this.longestSideWindow = window.innerWidth * window.devicePixelRatio;
 
 				this.imageSize = this.imageSizes[0];
+				console.log('imageSize start:', this.imageSize, 'longest side:', this.longestSideWindow);
 
 				for (var i=0; i<this.imageSizes.length; ++i)
 				{
@@ -113,19 +132,30 @@
 						break;
 					}
 				}			
-
-				console.log('load image', this.imageSize, 'on the longest sizde');
 			}
+			
+			
+			console.log('imageSize:', this.imageSize, 'lastImageSize:', this.lastImageSize);
 
-			this.image.src = 'img/photos/' + this.currentPhotoData.id + '-' + this.imageSize + '.jpg';
-			console.log('loading photo id:', this.currentPhotoData.id + '-' + this.imageSize + '.jpg');
+			if (this.lastImageSize != this.imageSize || this.currentPhotoData.id != this.lastPhotoId) 
+			{
+				console.log('loading image', this.imageSize, 'on the longest side');
+
+				this.lastImageSize = this.imageSize;
+				this.lastPhotoId = this.currentPhotoData.id;
+
+				this.image.src = '';
+				this.image.src = 'img/photos/' + this.currentPhotoData.id + '-' + this.imageSize + '.jpg';
+				console.log('loading photo id:', this.currentPhotoData.id + '-' + this.imageSize + '.jpg');
+			}
+			else console.log('already loaded this size:', this.lastImageSize);
 		}
 
 		p.picLoaded = function()
 		{
 			console.log('image loaded:', this.image.src);
 
-			if (this.urlData.path.length == 0) 
+			if (this.urlData.path[0] == 'cover') 
 			{
 				this.imageFillMethod = 'cover';
 				this.titleCopy = 'SOME PHOTOS I TOOK WITH MY CAMERA.<br/>ADAM PALMER';
@@ -161,7 +191,7 @@
 
 		p.fadeOutTitle = function()
 		{
-			if (this.urlData.path.length > 0) 
+			if (this.urlData.path[0] != 'cover') 
 			{
 				TweenMax.to('#titleCard', Math.max(3.5, 2 + this.currentPhotoData.title_display.length*.07), 
 				{ 
@@ -196,23 +226,27 @@
 		p.showNextPhoto = function()
 		{
 			this.currentPhoto++;
+			this.lastImageSize = this.imageSizes[0];
+
 			if (this.currentPhoto > this.data.photos.length-1)
 			{
 				this.currentPhoto = 0;
-				location = '';
+				location = '#/cover';
 			}
-			else location = '#/' + this.data.photos[this.currentPhoto].id;
+			else {
+				location = '#/' + this.data.photos[this.currentPhoto].id;
+			}
 		}
 
 		p.onResizeWindow = function()
 		{
 			if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
-			this.resizeTimeout = setTimeout(this.loadImageBound, 1000);
+			this.resizeTimeout = setTimeout(this.loadImageBound, 300);
 
-			if (this.urlData.path.length > 0) this.bgController.positionBackground();
+			if (this.urlData.path[0] != 'cover') this.bgController.positionBackground();
 			else this.bgController.resetBackground();	
 
-			this.textController.fitTitleToWindow(this.urlData.path.length);		
+			this.textController.fitTitleToArea(this.urlData.path[0], window.innerWidth, window.innerHeight);		
 		}
 	}
 
