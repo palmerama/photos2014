@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2014 at 03:35 PM
+-- Generation Time: Jan 23, 2014 at 12:59 AM
 -- Server version: 5.5.29
 -- PHP Version: 5.4.10
 
@@ -41,9 +41,9 @@ CREATE TABLE `photos` (
 --
 
 INSERT INTO `photos` (`id`, `page_id`, `title_display`, `title_alpha`, `cover`, `portrait`) VALUES
-(1, 'tofino', 'Tofino, Vancouver Island, at dusk. ', 0.2, 1, 0),
-(2, 'bridge', 'Lion''s Gate Bridge, Vancouver.', 0.4, 0, 1),
-(3, 'whale', 'Why hello there.', 0.3, 0, 0),
+(1, 'tofino', 'Tofino, Vancouver Island, at dusk.', 0.4, 0, 0),
+(2, 'bridge-vancouver', 'Lion&#039;s gate bridge, vancouver', 0.45, 0, 1),
+(3, 'whale-waving', 'Hello.', 0.3, 0, 0),
 (4, 'whaletail', 'goodbye.', 0.3, 1, 0);
 
 -- --------------------------------------------------------

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
+<!--[if lt IE 9]> <html class="ie8"> <![endif]-->
+<!--[if IE 9]> <html class="ie9"> <![endif]-->
+
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,11 +21,21 @@
 		
 		<div id='container'>
 
-			<div id='active-title' class='list-title'>ACTIVE</div>
-			<div id='active-list' class='photo-list'></div>
+			<div id='select-image-form'>
 
-			<div id='hidden-title' class='list-title'>HIDDEN</div>
-			<div id='hidden-list' class='photo-list'></div>
+				<form action='../scripts/admin/select_image.php' name='select_photo' method="post" enctype="multipart/form-data"> 
+					<input type="file" id='uploaded_image' onchange='' name="uploaded_image" />   
+					<input type="submit" id="submit" name="submit" class='button' value="Select Photo" />
+				</form>
+
+			</div>
+
+			<div id='photo-harness'>
+				<img id='temp-photo' src=''/>
+				<div id='titleCard'>
+					<span contenteditable>TYPE HERE...</span>
+				</div>
+			</div>
 
 		</div>
 
@@ -39,14 +52,14 @@
 		<script type="text/javascript" src="../../dev/rhythm/utils/JSAddress.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/app/BGController.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/app/TextController.js"></script>
-		<script type="text/javascript" src="../../dev/rhythm/app/AdminOverviewManager.js"></script>
+		<script type="text/javascript" src="../../dev/rhythm/app/AdminManager.js"></script>
 		<!-- END DEV -->
 
 		<script type="text/javascript">
 			MAIN.init = function()
 			{
 				var app = MAIN.namespace('MAIN.app');
-				new app.AdminOverviewManager().init();
+				new app.AdminManager().init();
 			};
 
 			$(function(){

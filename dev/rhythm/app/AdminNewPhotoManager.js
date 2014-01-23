@@ -19,8 +19,8 @@
 			this.textController.init();		
 
 			$('#select-image-form').bind('submit', this.uploadSelectedImage.bind(this));
-			$('#temp-photo').load(this.initPhotoText.bind(this));
 
+			$('#temp-photo').load(this.initPhotoText.bind(this));
 			$('#titleCard').bind('input', this.onTitleCardTextChange.bind(this));
 		}
 
