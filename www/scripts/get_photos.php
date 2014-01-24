@@ -10,8 +10,7 @@
 
   // GET PHOTOS IN SEQUENCE
 
-  $SQL = "SELECT DISTINCT photos.id, photos.page_id, photos.title_display, photos.title_alpha, photos.cover, photos.portrait 
-          FROM sequence, photos WHERE photos.id = sequence.photo_id ORDER BY sequence.id ASC";
+  $SQL = "SELECT * FROM photos WHERE display_order > 0 ORDER BY display_order ASC";
 
   $result = mysql_query($SQL) or die(mysql_error());    
 
@@ -23,6 +22,7 @@
       'page_id'=>$db_field['page_id'],
       'title_display'=>$db_field['title_display'],
       'title_alpha'=>$db_field['title_alpha'],
+      'title_colour'=>$db_field['title_colour'],
       'portrait'=>$db_field['portrait']
     );
 
@@ -32,8 +32,7 @@
 
   // GET PHOTOS *NOT* IN SEQUENCE
 
-  $SQL = "SELECT DISTINCT photos.id, photos.page_id, photos.title_display, photos.title_alpha, photos.cover, photos.portrait 
-          FROM sequence, photos WHERE photos.id NOT IN (SELECT photo_id FROM sequence)";
+  $SQL = "SELECT * FROM photos WHERE display_order = 0 ORDER BY id ASC";
 
   $result = mysql_query($SQL) or die(mysql_error());    
 
@@ -45,6 +44,7 @@
       'page_id'=>$db_field['page_id'],
       'title_display'=>$db_field['title_display'],
       'title_alpha'=>$db_field['title_alpha'],
+      'title_colour'=>$db_field['title_colour'],
       'portrait'=>$db_field['portrait']
     );
 
@@ -64,6 +64,7 @@
       'id'=>$db_field['id'],
       'page_id'=>$db_field['page_id'],
       'title_alpha'=>$db_field['title_alpha'],
+      'title_colour'=>$db_field['title_colour'],
       'portrait'=>$db_field['portrait']
     );
 

@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="../css/admin.css" type="text/css" media="all" />
 
 		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>	
+		<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 
 	</head>
@@ -28,18 +29,18 @@
 			<div id='controls'>
 
 				<div class='input-harness'>
-					<div id='page-id' class='list-title'>PAGE ID: </div>
-					<div id='page-id-input' class='list-title input' contenteditable></div>
+					<div id='title-alpha' class='input-title'>TITLE ALPHA: </div>
+					<div id='title-alpha-slider'></div>
+				</div>					
+
+				<div class='input-harness'>
+					<div id='cover' class='input-title'>USE AS COVER? </div>
+					<div id='cover-input' class='input-title input'>NO</div>
 				</div>
 
 				<div class='input-harness'>
-					<div id='title-alpha' class='list-title'>TITLE ALPHA: </div>
-					<div id='title-alpha-input' class='list-title input' contenteditable></div>
-				</div>	
-
-				<div class='input-harness'>
-					<div id='cover' class='list-title'>USE AS COVER? </div>
-					<div id='cover-input' class='list-title input'>NO</div>
+					<div id='page-id' class='input-title'>PAGE ID: </div>
+					<div id='page-id-input' class='input-title input' contenteditable></div>
 				</div>
 
 				<div class='button-harness'>

@@ -23,11 +23,15 @@
 
 			<div id='select-image-form'>
 
-				<form action='../scripts/admin/select_image.php' name='select_photo' method="post" enctype="multipart/form-data"> 
-					<input type="file" id='uploaded_image' onchange='' name="uploaded_image" />   
-					<input type="submit" id="submit" name="submit" class='button' value="Select Photo" />
+				<form action='../scripts/admin/select_image.php' name='select_photo' id='select_photo' method="post" enctype="multipart/form-data"> 
+					<input type="file" id='uploaded_image' name="uploaded_image" />   
+					<input type="submit" id="submit-btn" name="submit-btn" value="Select Photo" />
 				</form>
 
+			</div>
+
+			<div class='button-harness'>
+				<a href='#' class='button' id='new-photo-btn'>+</a>
 			</div>
 
 			<div id='photo-harness'>
@@ -45,21 +49,21 @@
 
 		<!-- DEV (These files are minified &/OR concatenated into the file above -->
 		<script type="text/javascript" src="../../dev/libs/misc/Function.prototype.bind.js"></script>
-		<script type="text/javascript" src="../../dev/libs/misc/jquery.form.min.js"></script>
+		<!--<script type="text/javascript" src="../../dev/libs/misc/jquery.form.min.js"></script>-->
  
 		<script type="text/javascript" src="../../dev/rhythm/utils/Tools.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/app/Main.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/utils/JSAddress.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/app/BGController.js"></script>
 		<script type="text/javascript" src="../../dev/rhythm/app/TextController.js"></script>
-		<script type="text/javascript" src="../../dev/rhythm/app/AdminManager.js"></script>
+		<script type="text/javascript" src="../../dev/rhythm/app/AdminNewPhotoManager.js"></script>
 		<!-- END DEV -->
 
 		<script type="text/javascript">
 			MAIN.init = function()
 			{
 				var app = MAIN.namespace('MAIN.app');
-				new app.AdminManager().init();
+				new app.AdminNewPhotoManager().init();
 			};
 
 			$(function(){

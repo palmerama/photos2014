@@ -12,28 +12,33 @@
 		// save resized image
 		include('../simpleimage.php'); 
 
-	 	$quality = 90;
+	 	$quality = 95;
 	 	$fileType = IMAGETYPE_JPEG;
 
 	 	$image = new SimpleImage(); 
-	 	$image->load($_FILES['uploaded_image']['tmp_name']); 
 
-	 	//$image->resizeToWidth(2000);
-	 	//$image->save('../../img/photos/1-2000.jpg', $fileType, $quality);
+	 	$image->load($_FILES['uploaded_image']['tmp_name']);
+	 	$portrait = $image->getHeight() > $image->getWidth();
+	 	if ($portrait) $image->resizeToHeight(2000);
+	 	else $image->resizeToWidth(2000);
+	 	$image->save('../../img/photos/tmp/tmp_photo_2000.jpg', $fileType, $quality);
 
-	 	//$image->resizeToWidth(1500);
-	 	//$image->save('../../img/photos/1-1500.jpg', $fileType, $quality);
+	 	$image->load($_FILES['uploaded_image']['tmp_name']);
+	 	if ($portrait) $image->resizeToHeight(1500);
+	 	else $image->resizeToWidth(1500);
+	 	$image->save('../../img/photos/tmp/tmp_photo_1500.jpg', $fileType, $quality);
 
-	 	$image->resizeToWidth(1000);
-	 	$image->save('../../img/photos/tmp/tmp_1000.jpg', $fileType, $quality);
+	 	$image->load($_FILES['uploaded_image']['tmp_name']);
+	 	if ($portrait) $image->resizeToHeight(1000);
+	 	else $image->resizeToWidth(1000);
+	 	$image->save('../../img/photos/tmp/tmp_photo_1000.jpg', $fileType, $quality);
 
-	 	//$image->save('../../img/photos/1-1000.jpg', $fileType, $quality);
+	 	$image->load($_FILES['uploaded_image']['tmp_name']);
+	 	if ($portrait) $image->resizeToHeight(500);
+	 	else $image->resizeToWidth(500);
+	 	$image->save('../../img/photos/tmp/tmp_photo_500.jpg', $fileType, $quality);
 
-	 	//$image->resizeToWidth(500);
-	 	//$image->save('../../img/photos/1-500.jpg', $fileType, $quality);
-
-	 	echo '../img/photos/tmp/tmp_1000.jpg';
+	 	header("Location: ../../admin/edit_photo.php?id=-1");
 	} 
-	else echo 'NO';
 
 ?>  

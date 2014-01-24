@@ -4,13 +4,13 @@
     var stage;
 
 
-    if (namespace.AdminManager === undefined) 
+    if (namespace.AdminNewPhotoManager === undefined) 
 	{
-        namespace.AdminManager = function()
+        namespace.AdminNewPhotoManager = function()
 		{	
 		}
 
-		var p = namespace.AdminManager.prototype;	
+		var p = namespace.AdminNewPhotoManager.prototype;	
 
 		
 		p.init = function()
@@ -18,10 +18,22 @@
 			this.textController = new namespace.TextController();
 			this.textController.init();		
 
-			$('#select-image-form').bind('submit', this.uploadSelectedImage.bind(this));
+			// $('#select-image-form').bind('submit', this.uploadSelectedImage.bind(this));
+			$('#new-photo-btn').bind('click', this.onClickNewPhoto.bind(this));
+
+			$('#uploaded_image').change(function() {
+				console.log($('#select_photo'));
+			  	$('#select_photo').submit();
+			});
 
 			$('#temp-photo').load(this.initPhotoText.bind(this));
 			$('#titleCard').bind('input', this.onTitleCardTextChange.bind(this));
+		}
+
+		p.onClickNewPhoto = function(e)
+		{
+			e.preventDefault();
+			$('#uploaded_image')[0].click();
 		}
 
 		p.uploadSelectedImage = function(e)

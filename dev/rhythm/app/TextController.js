@@ -44,6 +44,9 @@
 				}
 			}			
 			else $('#titleCard').css('top', Math.floor(   (h - $('#titleCard span').outerHeight())/2 - parseInt($('#titleCard').css('padding-top'))*.7)  );
+
+			// center?
+			// $('#titleCard').css('left', (w - $('#titleCard span').innerWidth())/2);
 		}
 
 	}

@@ -52,14 +52,14 @@
 
 		p.onDataLoaded = function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			this.data = data;		
 
 		    // photo lookup table
 			this.data.photosLookup = [];
 			for (var i=0; i<this.data.photos.length; ++i) this.data.photosLookup[this.data.photos[i].page_id] = i;
 
-			console.log('lookup:', this.data.photosLookup);
+			//console.log('lookup:', this.data.photosLookup);
 
 		    // set up jsAddress
 			this.jsAddress = new MAIN.utils.JSAddress();
@@ -77,7 +77,7 @@
 			this.disableClick();
 			this.urlData = urlData;
 
-			console.log('\n\n');
+			//console.log('\n\n');
 
 			if (this.urlData.path.length == 0)
 			{
@@ -96,7 +96,7 @@
 					this.currentPhotoData = this.data.photos[this.currentPhoto];
 				}
 
-				console.log('covers:', this.data.covers.length, 'photo data:', this.currentPhotoData);
+				//console.log('covers:', this.data.covers.length, 'photo data:', this.currentPhotoData);
 
 				// hide current photo
 				TweenMax.killTweensOf('#pic');
@@ -116,14 +116,14 @@
 				this.imageSize = this.imageSizes[this.imageSizes.length-1];
 			}
 			else {
-				console.log('window size =>', window.innerWidth * window.devicePixelRatio, 'x', window.innerHeight * window.devicePixelRatio);
-				console.log('pixel ratio:', window.devicePixelRatio);
+				//console.log('window size =>', window.innerWidth * window.devicePixelRatio, 'x', window.innerHeight * window.devicePixelRatio);
+				//console.log('pixel ratio:', window.devicePixelRatio);
 
 				if (this.currentPhotoData.portrait == '1') this.longestSideWindow = window.innerHeight * window.devicePixelRatio;
 				else this.longestSideWindow = window.innerWidth * window.devicePixelRatio;
 
 				this.imageSize = this.imageSizes[0];
-				console.log('imageSize start:', this.imageSize, 'longest side:', this.longestSideWindow);
+				//console.log('imageSize start:', this.imageSize, 'longest side:', this.longestSideWindow);
 
 				for (var i=0; i<this.imageSizes.length; ++i)
 				{
@@ -136,25 +136,25 @@
 			}
 			
 			
-			console.log('imageSize:', this.imageSize, 'lastImageSize:', this.lastImageSize);
+			//console.log('imageSize:', this.imageSize, 'lastImageSize:', this.lastImageSize);
 
 			if (this.lastImageSize != this.imageSize || this.currentPhotoData.id != this.lastPhotoId) 
 			{
-				console.log('loading image', this.imageSize, 'on the longest side');
+				//console.log('loading image', this.imageSize, 'on the longest side');
 
 				this.lastImageSize = this.imageSize;
 				this.lastPhotoId = this.currentPhotoData.id;
 
 				this.image.src = '';
 				this.image.src = 'img/photos/' + this.currentPhotoData.id + '-' + this.imageSize + '.jpg';
-				console.log('loading photo id:', this.currentPhotoData.id + '-' + this.imageSize + '.jpg');
+				//console.log('loading photo id:', this.currentPhotoData.id + '-' + this.imageSize + '.jpg');
 			}
-			else console.log('already loaded this size:', this.lastImageSize);
+			// else console.log('already loaded this size:', this.lastImageSize);
 		}
 
 		p.picLoaded = function()
 		{
-			console.log('image loaded:', this.image.src);
+			//console.log('image loaded:', this.image.src);
 
 			if (this.urlData.path[0] == 'cover') 
 			{
@@ -174,7 +174,10 @@
 
 			$('#titleCard span').html(this.titleCopy);
 			$('#titleCard').css('font-size', '1px');
+
+			this.textShadowColour = this.currentPhotoData.title_colour;
 			TweenMax.to('#titleCard', 0, { textShadow:this.textShadowColour + ' 0 0 0px' });
+
 			this.onResizeWindow();
 
 			// show photo

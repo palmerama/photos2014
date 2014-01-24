@@ -37,11 +37,72 @@
 			this.populateActive();
 			this.populateHidden();
 
-			// mouse events
+			// lists
 			$('.list-photo').bind('click', this.onClickPhoto.bind(this));
 			$('.list-photo').bind('mouseenter', this.onMouseEnterPhoto.bind(this));
 			$('.list-photo').bind('mouseleave', this.onMouseLeavePhoto.bind(this));
 			$('.list-photo').load(this.onImageLoaded.bind(this));
+
+			// new photo
+			$('#new-photo-btn').bind('click', this.onClickNewPhoto.bind(this));
+			$('#uploaded_image').change(function() {
+				console.log($('#select_photo'));
+			  	$('#select_photo').submit();
+			});
+
+			// make sortable
+			$('.photo-list').sortable();
+    		$('.photo-list').disableSelection();
+
+    		$("#active-list, #hidden-list").sortable({
+		        connectWith: '.connectedSortable'
+		    }).disableSelection();
+
+    		$('.photo-list').on('sortupdate', this.onListSorted.bind(this));
+		}
+
+		p.onListSorted = function(e, ui)
+		{
+			// ACTIVE list
+			var list = $('#active-list .list-photo');
+			var sorted = [];
+
+			for (var i=0; i<list.length; ++i)
+			{
+				sorted.push( $(list[i]).attr('data-id') );
+			}
+
+			var activeJSON = JSON.stringify(sorted);
+
+			// HIDDEN list
+			list = $('#hidden-list .list-photo');
+			sorted = [];
+
+			for (var i=0; i<list.length; ++i)
+			{
+				sorted.push( $(list[i]).attr('data-id') );
+			}
+
+			var hiddenJSON = JSON.stringify(sorted);
+
+			// SAVE
+			$.ajax({
+			    type: 'POST',
+			    url: '../scripts/admin/update_display_order.php',
+			    data: {active: activeJSON, hidden: hiddenJSON}, 
+			    cache: false,
+			    success: this.onListSortUpdated.bind(this)
+			});
+		}
+
+		p.saveListSorted = function()
+		{
+
+		}
+
+		p.onListSortUpdated = function(result)
+		{
+			console.log(result);
 		}
 
 		p.onImageLoaded = function(e)
@@ -51,6 +112,7 @@
 			if (this.numPhotosLoaded == this.data.photos.length + this.data.hidden.length)
 			{
 				$.each($('.list-photo'), this.showPhoto.bind(this));
+				TweenMax.to('#new-photo-btn', .6, {delay:this.numPhotosLoaded*.1 + .3, autoAlpha:1, ease:Sine.easeIn});
 			}
 		}
 
@@ -91,6 +153,12 @@
 		{
 			e.preventDefault();
 			window.location = 'edit_photo.php?id=' + $(e.target).attr('data-id');
+		}
+
+		p.onClickNewPhoto = function(e)
+		{
+			e.preventDefault();
+			$('#uploaded_image')[0].click();
 		}
 	}
 

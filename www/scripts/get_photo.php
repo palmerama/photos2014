@@ -20,6 +20,7 @@
       'page_id'=>htmlspecialchars_decode($db_field['page_id'], ENT_QUOTES),
       'title_display'=>htmlspecialchars_decode($db_field['title_display'], ENT_QUOTES),
       'title_alpha'=>$db_field['title_alpha'],
+      'title_colour'=>$db_field['title_colour'],
       'portrait'=>$db_field['portrait'],
       'cover'=>$db_field['cover']
     );
