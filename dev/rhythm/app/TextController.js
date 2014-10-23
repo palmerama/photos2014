@@ -38,7 +38,7 @@
 
 			if (intro == 'cover')
 			{
-				while ($('#titleCard span').innerWidth() > w* .9 || $('#titleCard span').outerHeight() > h*.94) 
+				while ($('#titleCard span').innerWidth() > w* .96 || $('#titleCard span').outerHeight() > h*.94) 
 				{
 					this.decreaseFontSize();
 				}

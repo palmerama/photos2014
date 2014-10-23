@@ -100,7 +100,7 @@
 
 				// hide current photo
 				TweenMax.killTweensOf('#pic');
-				TweenMax.to('#pic', .2, { autoAlpha:0, ease:Sine.easeIn });
+				TweenMax.to('#pic', .1, { autoAlpha:0, ease:Sine.easeIn });
 
 				// hide text, then load new photo 
 				TweenMax.killTweensOf('#titleCard');
@@ -181,7 +181,7 @@
 			this.onResizeWindow();
 
 			// show photo
-			TweenMax.to('#pic', 1, { autoAlpha:1, ease:Sine.easeInOut, onComplete:this.enableClick.bind(this) });
+			TweenMax.to('#pic', .4, { autoAlpha:1, ease:Sine.easeInOut, onComplete:this.enableClick.bind(this) });
 
 			// show text
 			TweenMax.killTweensOf('#titleCard');
